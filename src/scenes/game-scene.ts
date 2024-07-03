@@ -2,6 +2,8 @@ import { Bullet } from './../objects/bullet'
 import { Player } from '../objects/player'
 import { Enemy } from '../objects/enemy'
 import { Obstacle } from '../objects/obstacles/obstacle'
+import { ScoreManager } from '../manager/ScoreManager'
+import { AudioManager } from '../manager/AudioManager'
 
 export class GameScene extends Phaser.Scene {
     private map: Phaser.Tilemaps.Tilemap
@@ -24,7 +26,9 @@ export class GameScene extends Phaser.Scene {
 
     create(): void {
         // create tilemap from tiled JSON
-        this.map = this.make.tilemap({ key: 'levelMap'})
+
+        ScoreManager.getInstance().resetScore()
+        this.map = this.make.tilemap({ key: 'levelMap' })
 
         this.tileset = this.map.addTilesetImage('tiles') as Phaser.Tilemaps.Tileset
         this.layer = this.map.createLayer(
@@ -96,17 +100,12 @@ export class GameScene extends Phaser.Scene {
             )
         }, this)
 
-        console.log(this.map.widthInPixels)
-        console.log(this.map.heightInPixels)
         // Thiết lập giới hạn cho camera
         this.cameras.main.setBounds(0, 0, this.map.widthInPixels, this.map.heightInPixels)
 
         // Theo dõi người chơi với camera
-        this.cameras.main.startFollow(this.player, false, 0.5, 0.5)
-        
-
-        // // Điều chỉnh tỷ lệ zoom của camera
-        // this.cameras.main.setZoom(0.5)
+        this.cameras.main.startFollow(this.player, true, 0.5, 0.5)
+        this.cameras.main.setZoom(0.6)
     }
 
     update(): void {
@@ -170,11 +169,13 @@ export class GameScene extends Phaser.Scene {
     }
 
     private enemyBulletHitPlayer(bullet: Bullet, player: Player): void {
+        AudioManager.getInstance(this).playHit()
         bullet.destroy()
         player.updateHealth()
     }
 
     private playerBulletHitEnemy(bullet: Bullet, enemy: Enemy): void {
+        AudioManager.getInstance(this).playHit()
         bullet.destroy()
         enemy.updateHealth()
     }

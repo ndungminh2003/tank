@@ -1,5 +1,7 @@
 import { Bullet } from './bullet'
 import { IImageConstructor } from '../interfaces/image.interface'
+import { ScoreManager } from '../manager/ScoreManager'
+import { AudioManager } from '../manager/AudioManager'
 
 export class Player extends Phaser.GameObjects.Image {
     body: Phaser.Physics.Arcade.Body
@@ -39,7 +41,7 @@ export class Player extends Phaser.GameObjects.Image {
         // variables
         this.health = 1
         this.lastShoot = 0
-        this.speed = 500
+        this.speed = 350
 
         // image
         this.setOrigin(0.5, 0.5)
@@ -71,8 +73,6 @@ export class Player extends Phaser.GameObjects.Image {
         this.downKey = this.scene.input.keyboard!.addKey(Phaser.Input.Keyboard.KeyCodes.S)
 
         this.scene.input.on('pointermove', (pointer: any) => {
-            // console.log('pointer', pointer);
-            // console.log('barrel', this.barrel);
             this.barrel.rotation =
                 Phaser.Math.Angle.Between(
                     this.barrel.x,
@@ -127,49 +127,16 @@ export class Player extends Phaser.GameObjects.Image {
             this.angle = 135
             this.scene.physics.velocityFromAngle(45, this.speed, this.body.velocity)
         } else if (this.upKey.isDown) {
-            // this.rotation += 0.05
-            // if (this.angle >= -180) {
-            //     this.angle = 180
-            // }
             this.angle = 0
             this.scene.physics.velocityFromAngle(-90, this.speed, this.body.velocity)
-            // console.log(this.angle)
         } else if (this.downKey.isDown) {
-            // this.rotation += 0.05
-            // if (this.angle >= 0 || this.angle <= 0) {
-            //     this.angle = 0
-            // }
             this.angle = 180
-            // console.log(this.angle)
             this.scene.physics.velocityFromAngle(90, this.speed, this.body.velocity)
         } else if (this.leftKey.isDown) {
-            
-            // this.rotation += 0.5
-            
-            // // Limiting the angle to be between -90 and 90 degrees
-            // if (this.angle > 90) {
-            //     this.angle = 90
-            // } else if (this.angle < -90) {
-            //     this.angle = -90
-            // }
-
             this.angle = -90
-
             this.scene.physics.velocityFromAngle(180, this.speed, this.body.velocity)
-            // console.log(this.angle)
         } else if (this.rightKey.isDown) {
-
-            // this.rotation -= 0.5
-            
-            // // Limiting the angle to be between -90 and 90 degrees
-            // if (this.angle > 90) {
-            //     this.angle = 90
-            // } else if (this.angle < -90) {
-            //     this.angle = -90
-            // }
-
             this.angle = 90
-
             this.scene.physics.velocityFromAngle(0, this.speed, this.body.velocity)
         } else {
             this.body.setVelocity(0, 0)
@@ -178,6 +145,8 @@ export class Player extends Phaser.GameObjects.Image {
 
     private handleShooting(): void {
         if (this.isShooting && this.scene.time.now > this.lastShoot) {
+            AudioManager.getInstance(this.scene).playShoot()
+            
             this.scene.cameras.main.shake(20, 0.005)
             this.scene.tweens.add({
                 targets: this,
@@ -225,7 +194,8 @@ export class Player extends Phaser.GameObjects.Image {
         } else {
             this.health = 0
             this.active = false
-            this.scene.scene.start('MenuScene')
+            ScoreManager.getInstance().writeBestScore()
+            this.scene.scene.launch('OverScene')
         }
     }
 }

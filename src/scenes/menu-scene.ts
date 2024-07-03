@@ -1,53 +1,68 @@
+import { Button } from '../button/Button'
+import { AudioManager } from '../manager/AudioManager'
+
 export class MenuScene extends Phaser.Scene {
-  private startKey: Phaser.Input.Keyboard.Key;
-  private bitmapTexts: Phaser.GameObjects.BitmapText[] = [];
+    private startKey: Phaser.Input.Keyboard.Key
+    private bitmapTexts: Phaser.GameObjects.BitmapText[] = []
+    private background: Phaser.GameObjects.Image
+    private startButton: Button
+    private settingsButton: Button
 
-  constructor() {
-    super({
-      key: 'MenuScene'
-    });
-  }
-
-  init(): void {
-    this.startKey = this.input.keyboard!.addKey(
-      Phaser.Input.Keyboard.KeyCodes.S
-    );
-    this.startKey.isDown = false;
-  }
-
-  create(): void {
-    // Use the scene's width and height for centering
-    const sceneCenterX = window.innerWidth / 2;
-    const sceneCenterY = window.innerHeight / 2;
-
-
-
-    // Add bitmap text for "PRESS S TO PLAY", centered based on the scene's dimensions
-    const pressSText = this.add.bitmapText(
-      sceneCenterX + 200,
-      sceneCenterY,
-      'font',
-      'PRESS S TO PLAY',
-      30
-    );
-    pressSText.setOrigin(0.5, 0.5);
-    this.bitmapTexts.push(pressSText);
-
-    // Add bitmap text for "TANK", also centered
-    const tankText = this.add.bitmapText(
-      sceneCenterX + 200,
-      sceneCenterY - 100,
-      'font',
-      'TANK',
-      100
-    );
-    tankText.setOrigin(0.5, 0.5);
-    this.bitmapTexts.push(tankText);
-  }
-
-  update(): void {
-    if (this.startKey.isDown) {
-      this.scene.start('GameScene');
+    constructor() {
+        super({
+            key: 'MenuScene',
+        })
     }
-  }
+
+    init(): void {
+        this.startKey = this.input.keyboard!.addKey(Phaser.Input.Keyboard.KeyCodes.S)
+        this.startKey.isDown = false
+    }
+
+    create(): void {
+        AudioManager.getInstance(this).playMusic()
+
+        this.background = this.add.image(0, 0, 'bg')
+        this.background.setOrigin(0.5, 0.5)
+        this.background.setPosition(this.cameras.main.width / 2, this.cameras.main.height / 2)
+
+        // Add start button
+        this.startButton = new Button(
+            this,
+            this.cameras.main.width / 2,
+            this.cameras.main.height / 2,
+            'btn',
+            'START',
+            () => {
+                this.popOutEffect(this.startButton, () => {
+                    this.scene.start('GameScene').start('HUDScene')
+                })
+            }
+        )
+
+        // Add bitmap text for "TANK", also centered
+        const tankText = this.add.bitmapText(
+            this.cameras.main.width / 2,
+            this.cameras.main.height / 2 - 180,
+            'font',
+            'TANK',
+            80
+        )
+        tankText.setOrigin(0.5, 0.5)
+        this.bitmapTexts.push(tankText)
+    }
+
+    update(): void {}
+
+    popOutEffect(button: Button, callback: Function) {
+        this.tweens.add({
+            targets: button,
+            scale: 1.2,
+            duration: 100,
+            yoyo: true,
+            onComplete: () => {
+                callback()
+            },
+        })
+    }
 }
