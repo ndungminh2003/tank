@@ -101,6 +101,7 @@ export class Player extends Phaser.GameObjects.Image {
 
             if (ScoreManager.getInstance().getScore() == 1400) {
                 this.scene.scene.launch('WinScene')
+                ScoreManager.getInstance().writeBestScore()
                 this.active = false
             }
         } else {
