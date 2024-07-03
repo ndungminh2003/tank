@@ -52,7 +52,7 @@ export class IconButton extends Phaser.GameObjects.Container {
         this.button.clearTint()
     }
 
-    public getIcon(): Phaser.GameObjects.Image { 
-        return this.icon 
+    public getIcon(): Phaser.GameObjects.Image {
+        return this.icon
     }
 }

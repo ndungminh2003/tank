@@ -146,7 +146,7 @@ export class Player extends Phaser.GameObjects.Image {
     private handleShooting(): void {
         if (this.isShooting && this.scene.time.now > this.lastShoot) {
             AudioManager.getInstance(this.scene).playShoot()
-            
+
             this.scene.cameras.main.shake(20, 0.005)
             this.scene.tweens.add({
                 targets: this,

@@ -4,7 +4,7 @@ export class AudioManager {
     private shootMusic: Phaser.Sound.WebAudioSound
     private hitMusic: Phaser.Sound.WebAudioSound
     private isMuted: boolean = false
-    
+
     public static getInstance(scene: Phaser.Scene): AudioManager {
         if (!AudioManager.instance) {
             AudioManager.instance = new AudioManager(scene)
