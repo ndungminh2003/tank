@@ -151,6 +151,12 @@
                 "type": "image",
                 "key": "iconSoundOn",
                 "url": "./assets/button/iconSoundOn.png"
+            },
+            {
+              "type": "atlas",
+              "key": "confetti",
+              "textureURL": "./assets/confetti/confetti.png",
+              "atlasURL": "./assets/confetti/confetti.json"
             }
         ]
     }

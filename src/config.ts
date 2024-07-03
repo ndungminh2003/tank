@@ -4,6 +4,7 @@ import { MenuScene } from './scenes/menu-scene'
 import { OverScene } from './scenes/over-scene'
 import { PauseScene } from './scenes/pause-scene'
 import { HUDScene } from './scenes/hud-scene'
+import { WinScene } from './scenes/win-scene'
 
 export const GameConfig: Phaser.Types.Core.GameConfig = {
     title: 'Tank',
@@ -17,7 +18,7 @@ export const GameConfig: Phaser.Types.Core.GameConfig = {
         autoCenter: Phaser.Scale.CENTER_BOTH, // Phaser.Scale.CENTER_BOTH, Phaser.Scale.CENTER_HORIZONTALLY, Phaser.Scale.CENTER_VERTICALLY
     },
 
-    scene: [BootScene, MenuScene, GameScene, OverScene, PauseScene, HUDScene],
+    scene: [BootScene, MenuScene, GameScene, OverScene, PauseScene, HUDScene, WinScene],
     input: {
         keyboard: true,
     },

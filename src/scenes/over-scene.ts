@@ -1,5 +1,4 @@
 import { Button } from '../button/Button'
-import { AudioManager } from '../manager/AudioManager'
 import { ScoreManager } from '../manager/ScoreManager'
 
 export class OverScene extends Phaser.Scene {
@@ -23,19 +22,12 @@ export class OverScene extends Phaser.Scene {
         graphics.fillStyle(0x000000, 0.7)
         graphics.fillRect(0, 0, width, height)
 
-        this.container = this.add.image(0, 0, 'container').setScale(4)
+        this.container = this.add.image(0, 0, 'container')
         this.container.setOrigin(0.5)
         Phaser.Display.Align.In.Center(
             this.container,
             this.add.zone(width / 2, height / 2, width, height)
         )
-
-        this.overText = this.add.text(width / 2, height / 2 - 150, 'GAME OVER', {
-            fontSize: '48px',
-            color: '#fff',
-            fontStyle: 'bold',
-        })
-        this.overText.setOrigin(0.5)
 
         this.scoreText = this.add.bitmapText(
             width / 2 - 100,
@@ -89,7 +81,6 @@ export class OverScene extends Phaser.Scene {
                 this.scene.stop('HUDScene')
                 this.scene.stop('GameScene')
                 this.scene.stop('PauseScene')
-                AudioManager.getInstance(this).stopMusic()
                 this.scene.start('MenuScene')
             })
         })

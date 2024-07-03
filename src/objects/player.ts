@@ -98,6 +98,11 @@ export class Player extends Phaser.GameObjects.Image {
             this.lifeBar.y = this.y
             this.handleInput()
             this.handleShooting()
+
+            if (ScoreManager.getInstance().getScore() == 1400) {
+                this.scene.scene.launch('WinScene')
+                this.active = false
+            }
         } else {
             this.destroy()
             this.barrel.destroy()
