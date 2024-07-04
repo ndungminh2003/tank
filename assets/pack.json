@@ -153,10 +153,19 @@
                 "url": "./assets/button/iconSoundOn.png"
             },
             {
-              "type": "atlas",
-              "key": "confetti",
-              "textureURL": "./assets/confetti/confetti.png",
-              "atlasURL": "./assets/confetti/confetti.json"
+                "type": "atlas",
+                "key": "confetti",
+                "textureURL": "./assets/confetti/confetti.png",
+                "atlasURL": "./assets/confetti/confetti.json"
+            },
+            {
+                "type": "spritesheet",
+                "key": "missileExplosion",
+                "url": "./assets/missileExplosion.png",
+                "frameConfig": {
+                    "frameWidth": 64,
+                    "frameHeight": 64
+                }
             }
         ]
     }
