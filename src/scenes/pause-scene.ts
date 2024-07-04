@@ -57,11 +57,15 @@ export class PauseScene extends Phaser.Scene {
             'iconReplay',
             () => {
                 this.popOutEffect(this.replayBtn, () => {
-                    this.scene.stop('HUDScene')
-                    this.scene.stop('GameScene')
-                    this.scene.start('GameScene')
-                    this.scene.start('HUDScene')
-                    this.scene.stop('PauseScene')
+                    this.cameras.main.fadeOut(500, 0, 0, 0, (_camera: any, progress: number) => {
+                        if (progress === 1) {
+                            this.scene.stop('HUDScene')
+                            this.scene.stop('GameScene')
+                            this.scene.start('GameScene')
+                            this.scene.start('HUDScene')
+                            this.scene.stop('PauseScene')
+                        }
+                    })
                 })
             }
         )
@@ -74,10 +78,14 @@ export class PauseScene extends Phaser.Scene {
             'iconHome',
             () => {
                 this.popOutEffect(this.homeBtn, () => {
-                    this.scene.stop('HUDScene')
-                    this.scene.stop('GameScene')
-                    this.scene.start('MenuScene')
-                    this.scene.stop('PauseScene')
+                    this.cameras.main.fadeOut(500, 0, 0, 0, (_camera: any, progress: number) => {
+                        if (progress === 1) {
+                            this.scene.stop('HUDScene')
+                            this.scene.stop('GameScene')
+                            this.scene.start('MenuScene')
+                            this.scene.stop('PauseScene')
+                        }
+                    })
                 })
             }
         )

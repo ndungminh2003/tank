@@ -198,7 +198,7 @@ export class Player extends Phaser.GameObjects.Image {
                 paused: false,
             })
 
-            if (this.bullets.getLength() < 10) {
+            if (this.bullets.getLength() < 30) {
                 this.bullets.add(
                     new Bullet({
                         scene: this.scene,

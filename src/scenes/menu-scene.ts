@@ -35,7 +35,11 @@ export class MenuScene extends Phaser.Scene {
             'START',
             () => {
                 this.popOutEffect(this.startButton, () => {
-                    this.scene.start('GameScene').start('HUDScene')
+                    this.cameras.main.fadeOut(500, 0, 0, 0, (_camera: any, progress: number) => {
+                        if (progress === 1) {
+                            this.scene.start('GameScene').start('HUDScene')
+                        }
+                    })
                 })
             }
         )

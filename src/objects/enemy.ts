@@ -86,6 +86,7 @@ export class Enemy extends Phaser.GameObjects.Image {
             this.barrel.destroy()
             this.lifeBar.destroy()
             ScoreManager.getInstance().increaseScore(200)
+
         }
     }
 
@@ -123,6 +124,26 @@ export class Enemy extends Phaser.GameObjects.Image {
         } else {
             this.health = 0
             this.active = false
+
+            let missileExplosion = this.scene.add.sprite(
+                this.x,
+                this.y,
+                'missileExplosion'
+            ).setScale(2)
+
+            this.scene.anims.create({
+                key: 'missileExplosionEffect',
+                frames: this.scene.anims.generateFrameNumbers('missileExplosion', {
+                    start: 0,
+                    end: 7,
+                }),
+                frameRate: 20,
+                repeat: 0,
+            })
+
+            missileExplosion.play('missileExplosionEffect', true)
+            this.scene.add.existing(missileExplosion)
+
         }
     }
 }
