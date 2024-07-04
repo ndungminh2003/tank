@@ -13,6 +13,8 @@ export class GameScene extends Phaser.Scene {
     private player: Player
     private enemies: Phaser.GameObjects.Group
     private obstacles: Phaser.GameObjects.Group
+    private miniMapCamera: Phaser.Cameras.Scene2D.Camera
+    private miniMapBorder: Phaser.GameObjects.Graphics
 
     private target: Phaser.Math.Vector2
 
@@ -106,6 +108,29 @@ export class GameScene extends Phaser.Scene {
         // Theo dõi người chơi với camera
         this.cameras.main.startFollow(this.player, true, 0.5, 0.5)
         this.cameras.main.setZoom(0.6)
+
+        this.createMiniMap()
+    }
+
+    private createMiniMap(): void {
+        this.miniMapCamera = this.cameras
+            .add(this.cameras.main.width - 310, this.cameras.main.height - 250, 300, 300)
+            .setZoom(0.1)
+            .setName('miniMap')
+            .startFollow(this.player, true, 0.5, 0.5)
+            .setBounds(0, 0, this.map.widthInPixels, this.map.heightInPixels)
+
+        this.createMiniMapBorder()
+
+        this.miniMapCamera.ignore(this.miniMapBorder)
+    }
+
+    private createMiniMapBorder(): void {
+        this.miniMapBorder = this.add.graphics()
+        this.miniMapBorder.lineStyle(10, 0xffffff, 1) // white border with thickness 4
+        this.miniMapBorder
+            .strokeRect(this.cameras.main.width - 120, this.cameras.main.height - 165, 510, 412)
+            .setScrollFactor(0)
     }
 
     update(): void {

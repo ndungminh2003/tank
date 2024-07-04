@@ -25,6 +25,8 @@ export class Player extends Phaser.GameObjects.Image {
     private rightKey: Phaser.Input.Keyboard.Key
     private upKey: Phaser.Input.Keyboard.Key
     private downKey: Phaser.Input.Keyboard.Key
+    private emitter1: Phaser.GameObjects.Particles.ParticleEmitter
+    private emitter2: Phaser.GameObjects.Particles.ParticleEmitter
 
     public getBullets(): Phaser.GameObjects.Group {
         return this.bullets
@@ -46,12 +48,39 @@ export class Player extends Phaser.GameObjects.Image {
         // image
         this.setOrigin(0.5, 0.5)
         this.setDepth(0)
-        this.angle = -180
+        this.angle = 90
 
         this.barrel = this.scene.add.image(this.x, this.y, 'barrelBlue')
         this.barrel.setOrigin(0.5, 1)
         this.barrel.setDepth(1)
         this.barrel.angle = 180
+
+        // // emitters
+        // this.emitter1 = this.scene.add.particles(0, 0, '', {
+        //     x: this.x,
+        //     y: this.y + this.height / 2,
+        //     speedX: { min: -10, max: 10 },
+        //     speedY: { min: -10, max: 10 },
+        //     lifespan: 1000,
+        //     scale: { start: 0.5, end: 0 },
+        //     tint: Phaser.Display.Color.HSVColorWheel()[0].color, // black color
+        //     blendMode: 'ADD',
+        //     frequency: 50,
+        //     color: [0xff0000, 0x0000ff],
+        // })
+
+        // this.emitter2 = this.scene.add.particles(0, 0, '', {
+        //     x: this.x,
+        //     y: this.y - this.height / 2,
+        //     speedX: { min: -10, max: 10 },
+        //     speedY: { min: -10, max: 10 },
+        //     lifespan: 1000,
+        //     scale: { start: 0.5, end: 0 },
+        //     tint: Phaser.Display.Color.HSVColorWheel()[0].color, // black color
+        //     blendMode: 'ADD',
+        //     frequency: 50,
+        //     color: [0xff0000, 0x0000ff],
+        // })
 
         this.lifeBar = this.scene.add.graphics()
         this.redrawLifebar()
@@ -98,7 +127,8 @@ export class Player extends Phaser.GameObjects.Image {
             this.lifeBar.y = this.y
             this.handleInput()
             this.handleShooting()
-
+            // this.emitter1.setPosition(this.x, this.y + this.height / 2)
+            // this.emitter2.setPosition(this.x, this.y - this.height / 2)
             if (ScoreManager.getInstance().getScore() == 1400) {
                 this.scene.scene.launch('WinScene')
                 ScoreManager.getInstance().writeBestScore()
