@@ -68,20 +68,28 @@ export class OverScene extends Phaser.Scene {
 
         this.newGameBtn = new Button(this, width / 2, height / 2 + 50, 'btn', 'NEW GAME', () => {
             this.popOutEffect(this.newGameBtn, () => {
-                this.scene.stop('HUDScene')
-                this.scene.stop('GameScene')
-                this.scene.start('GameScene')
-                this.scene.start('HUDScene')
-                this.scene.stop('PauseScene')
+                this.cameras.main.fadeOut(500, 0, 0, 0, (_camera: any, progress: number) => {
+                    if (progress === 1) {
+                        this.scene.stop('HUDScene')
+                        this.scene.stop('GameScene')
+                        this.scene.start('GameScene')
+                        this.scene.start('HUDScene')
+                        this.scene.stop('PauseScene')
+                    }
+                })
             })
         })
 
         this.mainMenuBtn = new Button(this, width / 2, height / 2 + 150, 'btn', 'MAIN MENU', () => {
             this.popOutEffect(this.mainMenuBtn, () => {
-                this.scene.stop('HUDScene')
-                this.scene.stop('GameScene')
-                this.scene.stop('PauseScene')
-                this.scene.start('MenuScene')
+                this.cameras.main.fadeOut(500, 0, 0, 0, (_camera: any, progress: number) => {
+                    if (progress === 1) {
+                        this.scene.stop('HUDScene')
+                        this.scene.stop('GameScene')
+                        this.scene.stop('PauseScene')
+                        this.scene.start('MenuScene')
+                    }
+                })
             })
         })
     }

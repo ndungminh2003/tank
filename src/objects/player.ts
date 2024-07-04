@@ -25,8 +25,8 @@ export class Player extends Phaser.GameObjects.Image {
     private rightKey: Phaser.Input.Keyboard.Key
     private upKey: Phaser.Input.Keyboard.Key
     private downKey: Phaser.Input.Keyboard.Key
-    private emitter1: Phaser.GameObjects.Particles.ParticleEmitter
-    private emitter2: Phaser.GameObjects.Particles.ParticleEmitter
+
+    private emitter: Phaser.GameObjects.Particles.ParticleEmitter
 
     public getBullets(): Phaser.GameObjects.Group {
         return this.bullets
@@ -55,32 +55,20 @@ export class Player extends Phaser.GameObjects.Image {
         this.barrel.setDepth(1)
         this.barrel.angle = 180
 
-        // // emitters
-        // this.emitter1 = this.scene.add.particles(0, 0, '', {
-        //     x: this.x,
-        //     y: this.y + this.height / 2,
-        //     speedX: { min: -10, max: 10 },
-        //     speedY: { min: -10, max: 10 },
-        //     lifespan: 1000,
-        //     scale: { start: 0.5, end: 0 },
-        //     tint: Phaser.Display.Color.HSVColorWheel()[0].color, // black color
-        //     blendMode: 'ADD',
-        //     frequency: 50,
-        //     color: [0xff0000, 0x0000ff],
-        // })
-
-        // this.emitter2 = this.scene.add.particles(0, 0, '', {
-        //     x: this.x,
-        //     y: this.y - this.height / 2,
-        //     speedX: { min: -10, max: 10 },
-        //     speedY: { min: -10, max: 10 },
-        //     lifespan: 1000,
-        //     scale: { start: 0.5, end: 0 },
-        //     tint: Phaser.Display.Color.HSVColorWheel()[0].color, // black color
-        //     blendMode: 'ADD',
-        //     frequency: 50,
-        //     color: [0xff0000, 0x0000ff],
-        // })
+        this.emitter = this.scene.add
+        .particles(this.x, this.y, 'flare', {
+            frame: 'white',
+            color: [0xfacc22, 0xf89800, 0xf83600, 0x9f0404],
+            colorEase: 'quad.out',
+            lifespan: 1000,
+            angle: { min: -100, max: -80 },
+            scale: { start: 0.7, end: 0, ease: 'sine.out' },
+            speed: 50,
+            quantity: 1,
+            blendMode: 'ADD',
+        })
+        .setDepth(0.5)
+        .startFollow(this, -this.x, -this.y).pause()
 
         this.lifeBar = this.scene.add.graphics()
         this.redrawLifebar()
@@ -224,12 +212,17 @@ export class Player extends Phaser.GameObjects.Image {
     }
 
     public updateHealth(): void {
+        if (this.health <= 0.4) {
+            this.emitter.resume()
+        }
+
         if (this.health > 0) {
             this.health -= 0.05
             this.redrawLifebar()
         } else {
             this.health = 0
             this.active = false
+            this.emitter.stop()
             ScoreManager.getInstance().writeBestScore()
             this.scene.scene.launch('OverScene')
         }
