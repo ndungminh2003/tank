@@ -166,6 +166,11 @@
                     "frameWidth": 64,
                     "frameHeight": 64
                 }
+            },
+            {
+                "type": "image",
+                "key": "flare",
+                "url": "./assets/white.png"
             }
         ]
     }
